@@ -19,20 +19,20 @@ class EditorState extends State<Editor> with SingleTickerProviderStateMixin {
     _markdownController = TextEditingController();
   }
 
-  void _wrapSelection(String wrapper) {
+  void _wrapSelection({@required String start, String end}) {
     String value = _markdownController.value.text;
     String newValue;
     TextSelection newSelection = TextSelection(baseOffset: _markdownController.selection
-        .baseOffset + wrapper.length,
-        extentOffset: _markdownController.selection.extentOffset + wrapper.length);
+        .baseOffset + start.length,
+        extentOffset: _markdownController.selection.extentOffset + start.length);
 
-    if (_markdownController.selection.start != _markdownController.selection.end) {
-      newValue = value.substring(0, _markdownController.selection.start) + wrapper + value
+    if (end != null) {
+      newValue = value.substring(0, _markdownController.selection.start) + start + value
           .substring(_markdownController.selection.start, _markdownController.selection.end) +
-          wrapper +
+          end +
           value.substring(_markdownController.selection.end);
     } else {
-      newValue = value.substring(0, _markdownController.selection.start) + wrapper + value
+      newValue = value.substring(0, _markdownController.selection.start) + start + value
           .substring(_markdownController.selection.start);
     }
 
@@ -70,21 +70,37 @@ class EditorState extends State<Editor> with SingleTickerProviderStateMixin {
                   width: double.infinity,
                   child: Wrap(
                     children: <Widget>[
-                      FlatButton(child: Text("h1"), onPressed: () => _wrapSelection("# ")),
-                      FlatButton(child: Text("h2"), onPressed: () => _wrapSelection("## ")),
-                      FlatButton(child: Text("h3"), onPressed: () => _wrapSelection("### ")),
-                      FlatButton(child: Text("h4"), onPressed: () => _wrapSelection("#### ")),
-                      FlatButton(child: Text("h5"), onPressed: () => _wrapSelection("##### ")),
-                      FlatButton(child: Text("h6"), onPressed: () => _wrapSelection("###### ")),
-                      FlatButton(child: Text("Bold"), onPressed: () => _wrapSelection("**")),
-                      FlatButton(child: Text("Italic"), onPressed: () => _wrapSelection("*")),
-                      FlatButton(child: Text("Line"), onPressed: () => _wrapSelection("* * *")),
+                      FlatButton(child: Text("h1"), onPressed: () => _wrapSelection(start: "# ")),
+                      FlatButton(child: Text("h2"), onPressed: () => _wrapSelection(start: "## ")),
+                      FlatButton(child: Text("h3"), onPressed: () => _wrapSelection(start: "### ")),
+                      FlatButton(child: Text("h4"),
+                          onPressed: () => _wrapSelection(start: "#### ")),
+                      FlatButton(child: Text("h5"),
+                          onPressed: () => _wrapSelection(start: "##### ")),
+                      FlatButton(child: Text("h6"), onPressed: () =>
+                          _wrapSelection(start: "###### "
+                              "")),
+                      FlatButton(child: Text("Bold"), onPressed: () =>
+                          _wrapSelection(start: "**"
+                              , end: "**")),
+                      FlatButton(child: Text("Italic"), onPressed: () =>
+                          _wrapSelection(start: "*"
+                              "", end: "*")),
+                      FlatButton(child: Text("Line"), onPressed: () =>
+                          _wrapSelection(start: "* * "
+                              "*")),
+                      FlatButton(child: Text("Inline Code"), onPressed: () =>
+                          _wrapSelection
+                            (start: "`", end: "`")),
+                      FlatButton(child: Text("Code"), onPressed: () =>
+                          _wrapSelection
+                            (start: "```\n", end: "\n```")),
                     ],
                   ),)
                 ),
               ],
             ),
-            Text("Hai")
+            Text("This feature is still being worked on.")
           ]),)
       ],
     );
