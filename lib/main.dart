@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:markdown/Editor.dart';
+import 'package:markdown/Login.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget{
   build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Markdown App")),
-      body: Editor(),
+      body: Login(),
       drawer: Drawer(child: ListView(children: <Widget>[
         ListTile(title: Text("Document overview")),
         ListTile(title: Text("Login")),
