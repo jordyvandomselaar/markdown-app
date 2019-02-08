@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:markdown/DocumentOverview.dart';
+import 'package:markdown/LoggedInUser.dart';
 import 'package:markdown/Login.dart';
 
 void main() => runApp(MyApp());
@@ -32,7 +33,10 @@ class HomePage extends StatelessWidget {
             }
 
             if (snapshot.hasData) {
-              return DocumentOverview();
+              return LoggedInUser(
+                  user: snapshot.data,
+                  child: DocumentOverview()
+              );
             }
 
             return Login();
