@@ -8,20 +8,23 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        Center(child: Text("Login", style: TextStyle(fontSize: 32),),),
-        Center(child: RaisedButton(child: Text("Google"), onPressed: () async {
-          final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-          final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-          final AuthCredential credential = GoogleAuthProvider.getCredential(
-            accessToken: googleAuth.accessToken,
-            idToken: googleAuth.idToken,
-          );
+    return Scaffold(
+      appBar: AppBar(title: Text("Login")),
+      body: ListView(
+        children: <Widget>[
+          Center(child: Text("Login", style: TextStyle(fontSize: 32),),),
+          Center(child: RaisedButton(child: Text("Google"), onPressed: () async {
+            final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+            final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+            final AuthCredential credential = GoogleAuthProvider.getCredential(
+              accessToken: googleAuth.accessToken,
+              idToken: googleAuth.idToken,
+            );
 
-          await _auth.signInWithCredential(credential);
-        },))
-      ],
+            await _auth.signInWithCredential(credential);
+          },))
+        ],
+      ),
     );
   }
 }

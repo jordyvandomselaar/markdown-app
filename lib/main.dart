@@ -21,50 +21,25 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
 class HomePage extends StatelessWidget {
   build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text("Markdown App")),
-        body: StreamBuilder(
-          stream: FirebaseAuth.instance.onAuthStateChanged,
-          builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
-            if (snapshot.hasError) {
-              return Text("Something went wrong, please try again later");
-            }
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+        if (snapshot.hasError) {
+          return Text("Something went wrong, please try again later");
+        }
 
-            if (snapshot.hasData) {
-              return LoggedInUser(
-                  user: snapshot.data,
-                  child: DocumentOverview()
-              );
-            }
-
-            return Login();
-          },
-        ),
-        drawer: StreamBuilder(stream: FirebaseAuth.instance.onAuthStateChanged, builder:
-            (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
-          if (snapshot.hasError) {
-            return null;
-          }
-
-          if (snapshot.hasData) {
-            return Drawer(
-              child: ListView(children: <Widget>[
-                ListTile(title: Text("Document overview")),
-                ListTile(title: Text("Logout"), onTap: () {
-                  FirebaseAuth.instance.signOut();
-                },)
-              ]),
-            );
-          }
-
-          return Drawer(
-            child: ListView(children: <Widget>[
-              ListTile(title: Text("Login")),
-            ]),
+        if (snapshot.hasData) {
+          return LoggedInUser(
+              user: snapshot.data,
+              child: DocumentOverview()
           );
-        })
+        }
+
+        return Login();
+      },
     );
   }
 }
