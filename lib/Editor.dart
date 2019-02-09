@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +17,9 @@ class Editor extends StatefulWidget {
 class EditorState extends State<Editor> with SingleTickerProviderStateMixin {
   TabController _tabController;
   TextEditingController _markdownController;
+  TextEditingController _nameController;
   final String documentId;
+  Timer debouncer;
 
   EditorState({this.documentId});
 
@@ -25,6 +29,27 @@ class EditorState extends State<Editor> with SingleTickerProviderStateMixin {
 
     _tabController = TabController(length: 2, vsync: this);
     _markdownController = TextEditingController();
+    _nameController = TextEditingController();
+
+    _markdownController.addListener(() {
+      if (debouncer != null) {
+        debouncer.cancel();
+      }
+
+      debouncer = Timer(Duration(milliseconds: 200), () {
+        saveData();
+      });
+    });
+
+    _nameController.addListener(() {
+      if (debouncer != null) {
+        debouncer.cancel();
+      }
+
+      debouncer = Timer(Duration(milliseconds: 200), () {
+        saveData();
+      });
+    });
   }
 
   void _wrapSelection({@required String start, String end}) {
@@ -50,6 +75,13 @@ class EditorState extends State<Editor> with SingleTickerProviderStateMixin {
 
     _markdownController.value =
         TextEditingValue(text: newValue, selection: newSelection);
+  }
+
+  void saveData() {
+    Firestore.instance.collection('documents').document(documentId).updateData({
+      "markdown": _markdownController.value.text,
+      "name": _nameController.value.text
+    });
   }
 
   build(BuildContext context) {
@@ -90,17 +122,27 @@ class EditorState extends State<Editor> with SingleTickerProviderStateMixin {
                   }
 
                   _markdownController.value = TextEditingValue(text: snapshot.data["markdown"]);
+                  _nameController.value = TextEditingValue(text: snapshot.data["name"]);
 
                   return Column(
                     children: <Widget>[
                       Expanded(
-                        child: SingleChildScrollView(
-                            child: TextField(
-                              controller: _markdownController,
-                              maxLines: null,
-                              decoration:
-                              InputDecoration(labelText: "Your markdown"),
-                            )),
+                          child: ListView(
+                            children: <Widget>[
+                              TextField(
+                                controller: _nameController,
+                                maxLines: 1,
+                                decoration:
+                                InputDecoration(labelText: "Document name"),
+                              ),
+                              TextField(
+                                controller: _markdownController,
+                                maxLines: null,
+                                decoration:
+                                InputDecoration(labelText: "Markdown"),
+                              )
+                            ],
+                          )
                       ),
                       BottomAppBar(
                           child: SizedBox(

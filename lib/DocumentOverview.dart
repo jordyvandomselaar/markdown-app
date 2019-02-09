@@ -4,7 +4,6 @@ import 'package:markdown/Editor.dart';
 import 'package:markdown/LoggedInUser.dart';
 
 class DocumentOverview extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
