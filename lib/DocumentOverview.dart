@@ -5,6 +5,17 @@ import 'package:markdown/Editor.dart';
 import 'package:markdown/LoggedInUser.dart';
 
 class DocumentOverview extends StatelessWidget {
+  void newDocument(BuildContext context) async {
+    DocumentReference ref = await Firestore.instance.collection("documents").add({"name": "New "
+        "document", "user": LoggedInUser
+        .of(context)
+        .uid, "markdown": ""});
+
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) =>
+        Editor
+          (documentId: ref.documentID)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,6 +28,9 @@ class DocumentOverview extends StatelessWidget {
           },)
         ]),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () => newDocument(context), child: Icon
+        (Icons
+          .add)),
       body: StreamBuilder<QuerySnapshot>(
         stream: Firestore.instance.collection('documents').where("user", isEqualTo: LoggedInUser
             .of(context)
