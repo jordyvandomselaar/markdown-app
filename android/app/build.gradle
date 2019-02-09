@@ -34,7 +34,7 @@ android {
     defaultConfig {
         applicationId "app.jordy.markdown"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 27
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
