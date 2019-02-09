@@ -45,11 +45,17 @@ class DocumentOverview extends StatelessWidget {
             default:
               return new ListView(
                 children: snapshot.data.documents.map((DocumentSnapshot document) {
-                  return new ListTile(
-                    title: new Text(document['name']),
-                    onTap: () =>
-                        Navigator.of(context).push(MaterialPageRoute(builder:
-                            (BuildContext context) => Editor(documentId: document.documentID))),
+                  return Dismissible(
+                    key: Key(document.documentID),
+                    child: ListTile(
+                      title: new Text(document['name']),
+                      onTap: () =>
+                          Navigator.of(context).push(MaterialPageRoute(builder:
+                              (BuildContext context) => Editor(documentId: document.documentID))),
+                    ),
+                    onDismissed: (DismissDirection direction) {
+                      document.reference.delete();
+                    },
                   );
                 }).toList(),
               );
