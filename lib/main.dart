@@ -12,15 +12,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          textTheme: TextTheme()
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, textTheme: TextTheme()),
       home: HomePage(),
     );
   }
 }
-
 
 class HomePage extends StatelessWidget {
   build(BuildContext context) {
@@ -32,10 +28,7 @@ class HomePage extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return LoggedInUser(
-              user: snapshot.data,
-              child: DocumentOverview()
-          );
+          return LoggedInUser(user: snapshot.data, child: DocumentOverview());
         }
 
         return Login();

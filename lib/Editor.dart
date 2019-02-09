@@ -58,7 +58,7 @@ class EditorState extends State<Editor> with SingleTickerProviderStateMixin {
     TextSelection newSelection = TextSelection(
         baseOffset: _markdownController.selection.baseOffset + start.length,
         extentOffset:
-        _markdownController.selection.extentOffset + start.length);
+            _markdownController.selection.extentOffset + start.length);
 
     if (end != null) {
       newValue = value.substring(0, _markdownController.selection.start) +
@@ -115,92 +115,92 @@ class EditorState extends State<Editor> with SingleTickerProviderStateMixin {
           Expanded(
             child: TabBarView(controller: _tabController, children: <Widget>[
               FutureBuilder<DocumentSnapshot>(
-                future: Firestore.instance.collection('documents').document(documentId).get(),
-                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                future: Firestore.instance
+                    .collection('documents')
+                    .document(documentId)
+                    .get(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<DocumentSnapshot> snapshot) {
                   if (!snapshot.hasData) {
                     return Text("loading…");
                   }
 
-                  _markdownController.value = TextEditingValue(text: snapshot.data["markdown"]);
-                  _nameController.value = TextEditingValue(text: snapshot.data["name"]);
+                  _markdownController.value =
+                      TextEditingValue(text: snapshot.data["markdown"]);
+                  _nameController.value =
+                      TextEditingValue(text: snapshot.data["name"]);
 
                   return Column(
                     children: <Widget>[
                       Expanded(
                           child: ListView(
-                            children: <Widget>[
-                              TextField(
-                                controller: _nameController,
-                                maxLines: 1,
-                                decoration:
+                        children: <Widget>[
+                          TextField(
+                            controller: _nameController,
+                            maxLines: 1,
+                            decoration:
                                 InputDecoration(labelText: "Document name"),
-                              ),
-                              TextField(
-                                controller: _markdownController,
-                                maxLines: null,
-                                decoration:
-                                InputDecoration(labelText: "Markdown"),
-                              )
-                            ],
+                          ),
+                          TextField(
+                            controller: _markdownController,
+                            maxLines: null,
+                            decoration: InputDecoration(labelText: "Markdown"),
                           )
-                      ),
+                        ],
+                      )),
                       BottomAppBar(
                           child: SizedBox(
-                            width: double.infinity,
-                            child: Wrap(
-                              children: <Widget>[
-                                FlatButton(
-                                    child: Text("h1"),
-                                    onPressed: () => _wrapSelection(start: "# ")),
-                                FlatButton(
-                                    child: Text("h2"),
-                                    onPressed: () => _wrapSelection(start: "## ")),
-                                FlatButton(
-                                    child: Text("h3"),
-                                    onPressed: () => _wrapSelection(start: "### ")),
-                                FlatButton(
-                                    child: Text("h4"),
-                                    onPressed: () =>
-                                        _wrapSelection(start: "#### ")),
-                                FlatButton(
-                                    child: Text("h5"),
-                                    onPressed: () =>
-                                        _wrapSelection(start: "##### ")),
-                                FlatButton(
-                                    child: Text("h6"),
-                                    onPressed: () =>
-                                        _wrapSelection(
-                                            start: "###### "
-                                                "")),
-                                FlatButton(
-                                    child: Text("Bold"),
-                                    onPressed: () =>
-                                        _wrapSelection(start: "**", end: "**")),
-                                FlatButton(
-                                    child: Text("Italic"),
-                                    onPressed: () =>
-                                        _wrapSelection(
-                                            start: "*"
-                                                "",
-                                            end: "*")),
-                                FlatButton(
-                                    child: Text("Line"),
-                                    onPressed: () =>
-                                        _wrapSelection(
-                                            start: "* * "
-                                                "*")),
-                                FlatButton(
-                                    child: Text("Inline Code"),
-                                    onPressed: () =>
-                                        _wrapSelection(start: "`", end: "`")),
-                                FlatButton(
-                                    child: Text("Code"),
-                                    onPressed: () =>
-                                        _wrapSelection(
-                                            start: "```\n", end: "\n```")),
-                              ],
-                            ),
-                          )),
+                        width: double.infinity,
+                        child: Wrap(
+                          children: <Widget>[
+                            FlatButton(
+                                child: Text("h1"),
+                                onPressed: () => _wrapSelection(start: "# ")),
+                            FlatButton(
+                                child: Text("h2"),
+                                onPressed: () => _wrapSelection(start: "## ")),
+                            FlatButton(
+                                child: Text("h3"),
+                                onPressed: () => _wrapSelection(start: "### ")),
+                            FlatButton(
+                                child: Text("h4"),
+                                onPressed: () =>
+                                    _wrapSelection(start: "#### ")),
+                            FlatButton(
+                                child: Text("h5"),
+                                onPressed: () =>
+                                    _wrapSelection(start: "##### ")),
+                            FlatButton(
+                                child: Text("h6"),
+                                onPressed: () => _wrapSelection(
+                                    start: "###### "
+                                        "")),
+                            FlatButton(
+                                child: Text("Bold"),
+                                onPressed: () =>
+                                    _wrapSelection(start: "**", end: "**")),
+                            FlatButton(
+                                child: Text("Italic"),
+                                onPressed: () => _wrapSelection(
+                                    start: "*"
+                                        "",
+                                    end: "*")),
+                            FlatButton(
+                                child: Text("Line"),
+                                onPressed: () => _wrapSelection(
+                                    start: "* * "
+                                        "*")),
+                            FlatButton(
+                                child: Text("Inline Code"),
+                                onPressed: () =>
+                                    _wrapSelection(start: "`", end: "`")),
+                            FlatButton(
+                                child: Text("Code"),
+                                onPressed: () => _wrapSelection(
+                                    start: "```\n", end: "\n```")),
+                          ],
+                        ),
+                      )),
                     ],
                   );
                 },

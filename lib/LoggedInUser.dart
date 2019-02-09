@@ -12,7 +12,8 @@ class LoggedInUser extends InheritedWidget {
   }
 
   static FirebaseUser of(BuildContext context) {
-    LoggedInUser loggedInUser = context.inheritFromWidgetOfExactType(LoggedInUser);
+    LoggedInUser loggedInUser =
+        context.inheritFromWidgetOfExactType(LoggedInUser);
 
     return loggedInUser.user;
   }
